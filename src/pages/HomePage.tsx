@@ -425,8 +425,6 @@ function HeroSection() {
 ========================================================= */
 
 export function HomePage() {
-  const [currentDestination, setCurrentDestination] = useState(0);
-
   return (
     <main className="min-h-screen overflow-hidden bg-gradient-to-b from-slate-50 to-blue-50/50">
       {/* Flying planes - multiple animated planes */}
