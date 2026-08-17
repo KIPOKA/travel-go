@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { CalendarDays, MapPin, Search, Wallet } from "lucide-react";
 import { useDestinationSearch } from "../hooks/useDestinationSearch";
 import { ROUTES } from "@/lib/constants";
 
@@ -13,13 +13,9 @@ const PRICE_OPTIONS: { value: PriceRange; label: string }[] = [
   { value: "1000-plus", label: "$1000+" },
 ];
 
-/**
- * The pill-shaped hero search bar: destination autocomplete (reuses the same
- * debounced search hook as the SearchBar component), a date range, and a
- * price filter, all rolled into one query on submit.
- */
 export function HeroSearchBar() {
   const navigate = useNavigate();
+
   const [destinationQuery, setDestinationQuery] = useState("");
   const [destinationId, setDestinationId] = useState<string | null>(null);
   const [checkIn, setCheckIn] = useState("");
@@ -32,113 +28,169 @@ export function HeroSearchBar() {
 
   function handleSubmit() {
     const params = new URLSearchParams();
-    if (destinationId) params.set("destination", destinationId);
-    else if (destinationQuery) params.set("q", destinationQuery);
+
+    if (destinationId) {
+      params.set("destination", destinationId);
+    } else if (destinationQuery) {
+      params.set("q", destinationQuery);
+    }
+
     if (checkIn) params.set("checkIn", checkIn);
     if (checkOut) params.set("checkOut", checkOut);
     if (price !== "any") params.set("price", price);
+
     navigate(`${ROUTES.search}?${params.toString()}`);
   }
 
   return (
-    <div className="w-full max-w-2xl rounded-2xl border border-slate-100 bg-white p-2 shadow-xl shadow-slate-200/60 md:rounded-full">
-      <div className="flex flex-col divide-y divide-slate-100 md:flex-row md:items-center md:divide-x md:divide-y-0">
-        {/* Location */}
-        <div className="relative flex-1 px-4 py-2.5">
-          <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-            Location
-          </label>
-          <input
-            type="text"
-            value={destinationQuery}
-            onChange={(e) => {
-              setDestinationQuery(e.target.value);
-              setDestinationId(null);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-            placeholder="Where to?"
-            className="w-full text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400"
-          />
+    <div className="w-full max-w-5xl px-4">
+      <div className="rounded-[28px] border border-slate-200 bg-white p-2 shadow-[0_12px_40px_rgba(15,23,42,0.10)]">
+        <div className="flex flex-col lg:flex-row lg:items-stretch">
+          {/* Location */}
+          <div className="relative min-w-0 flex-[1.5]">
+            <div className="rounded-2xl px-5 py-4 transition hover:bg-slate-50 focus-within:bg-slate-50">
+              <div className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 shrink-0 text-blue-600" />
 
-          {showSuggestions && destinationQuery.length > 1 && (
-            <ul className="absolute left-0 right-0 top-full z-10 mt-2 max-h-64 overflow-auto rounded-xl border border-slate-200 bg-white shadow-lg">
-              {isLoading && (
-                <li className="px-4 py-2 text-sm text-slate-400">Searching…</li>
-              )}
-              {!isLoading && destinations?.length === 0 && (
-                <li className="px-4 py-2 text-sm text-slate-400">
-                  No destinations found
-                </li>
-              )}
-              {destinations?.map((d) => (
-                <li key={d.id}>
+                <div className="min-w-0 flex-1">
+                  <label className="mb-1 block text-xs font-semibold text-slate-500">
+                    Where
+                  </label>
+
+                  <input
+                    type="text"
+                    value={destinationQuery}
+                    onChange={(e) => {
+                      setDestinationQuery(e.target.value);
+                      setDestinationId(null);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() =>
+                      setTimeout(() => setShowSuggestions(false), 150)
+                    }
+                    placeholder="Search destinations"
+                    className="w-full bg-transparent text-sm font-semibold text-slate-900 outline-none placeholder:font-normal placeholder:text-slate-400"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Suggestions */}
+            {showSuggestions && destinationQuery.length > 1 && (
+              <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+                {isLoading && (
+                  <div className="px-4 py-3 text-sm text-slate-400">
+                    Searching destinations...
+                  </div>
+                )}
+
+                {!isLoading && destinations?.length === 0 && (
+                  <div className="px-4 py-3 text-sm text-slate-400">
+                    No destinations found
+                  </div>
+                )}
+
+                {destinations?.map((d) => (
                   <button
+                    key={d.id}
                     type="button"
                     onMouseDown={() => {
                       setDestinationId(d.id);
                       setDestinationQuery(`${d.city}, ${d.country}`);
                       setShowSuggestions(false);
                     }}
-                    className="block w-full px-4 py-2 text-left text-sm hover:bg-slate-50"
+                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition hover:bg-slate-50"
                   >
-                    {d.city}, {d.country}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50">
+                      <MapPin className="h-4 w-4 text-blue-600" />
+                    </div>
 
-        {/* Dates */}
-        <div className="flex-1 px-4 py-2.5">
-          <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-            Date
-          </label>
-          <div className="flex items-center gap-1.5">
-            <input
-              type="date"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              className="w-full text-sm font-medium text-slate-900 outline-none [color-scheme:light]"
-            />
-            <span className="text-slate-300">–</span>
-            <input
-              type="date"
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="w-full text-sm font-medium text-slate-900 outline-none [color-scheme:light]"
-            />
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {d.city}
+                      </p>
+                      <p className="text-xs text-slate-500">{d.country}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Dates */}
+          <div className="flex flex-[1.3] items-center border-t border-slate-100 lg:border-l lg:border-t-0">
+            <div className="flex w-full items-center rounded-2xl px-5 py-4 transition hover:bg-slate-50 focus-within:bg-slate-50">
+              <CalendarDays className="mr-3 h-5 w-5 shrink-0 text-blue-600" />
+
+              <div className="grid min-w-0 flex-1 grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-slate-500">
+                    Check in
+                  </label>
+
+                  <input
+                    type="date"
+                    value={checkIn}
+                    onChange={(e) => setCheckIn(e.target.value)}
+                    className="w-full bg-transparent text-sm font-semibold text-slate-900 outline-none [color-scheme:light]"
+                  />
+                </div>
+
+                <div className="border-l border-slate-200 pl-4">
+                  <label className="mb-1 block text-xs font-semibold text-slate-500">
+                    Check out
+                  </label>
+
+                  <input
+                    type="date"
+                    value={checkOut}
+                    min={checkIn || undefined}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                    className="w-full bg-transparent text-sm font-semibold text-slate-900 outline-none [color-scheme:light]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="flex flex-1 items-center border-t border-slate-100 lg:border-l lg:border-t-0">
+            <div className="flex w-full items-center rounded-2xl px-5 py-4 transition hover:bg-slate-50 focus-within:bg-slate-50">
+              <Wallet className="mr-3 h-5 w-5 shrink-0 text-blue-600" />
+
+              <div className="min-w-0 flex-1">
+                <label className="mb-1 block text-xs font-semibold text-slate-500">
+                  Budget
+                </label>
+
+                <select
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value as PriceRange)}
+                  className="w-full cursor-pointer bg-transparent text-sm font-semibold text-slate-900 outline-none"
+                >
+                  {PRICE_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Search */}
+          <div className="flex items-center p-1">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-7 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 hover:shadow-blue-600/30 active:scale-[0.98] lg:h-full lg:w-auto lg:rounded-[20px]"
+            >
+              <Search className="h-5 w-5" />
+              <span className="lg:hidden">Search</span>
+            </button>
           </div>
         </div>
-
-        {/* Price */}
-        <div className="flex-1 px-4 py-2.5">
-          <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-            Price
-          </label>
-          <select
-            value={price}
-            onChange={(e) => setPrice(e.target.value as PriceRange)}
-            className="w-full bg-transparent text-sm font-medium text-slate-900 outline-none"
-          >
-            {PRICE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="mx-2 my-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition hover:bg-blue-700"
-          aria-label="Search"
-        >
-          <Search className="h-5 w-5" />
-        </button>
       </div>
     </div>
   );

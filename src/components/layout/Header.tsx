@@ -13,8 +13,8 @@ export function Header() {
     <header className="border-b border-slate-100 bg-primary">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <Link to={ROUTES.home} className="text-2xl font-bold tracking-tight">
-          <span className="text-white">Ro</span>
-          <span className="text-orange-500">am</span>
+          <span className="text-white">Travel</span>
+          <span className="text-orange-500">Go</span>
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium md:flex">
