@@ -374,11 +374,11 @@ function JourneyStep({
             <span className="text-sm font-bold text-cyan-600">Step {step}</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">
             {title}
           </h2>
 
-          <p className="text-lg text-slate-600 mb-8">{description}</p>
+          <p className="text-lg text-secondary mb-8">{description}</p>
 
           <div className="space-y-3">
             {details.map((detail, idx) => (
