@@ -9,64 +9,23 @@ import {
   Compass,
   Globe2,
   Headphones,
-  Heart,
   MapPin,
   MapPinned,
   Mountain,
   Palmtree,
   PawPrint,
-  Play,
   Quote,
+  Plane,
   ShieldCheck,
   Star,
   Waves,
-  Plane,
+  Check,
 } from "lucide-react";
 import DestinationCard from "@/features/hotels/components/DestinationCard";
 
 /* =========================================================
-   ANIMATED FLYING PLANE
+   SCROLL-BASED PLANE ANIMATION
 ========================================================= */
-
-function FloatingPlane({ delay = 0, duration = 20 }) {
-  return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden">
-      <style>{`
-        @keyframes flightPath {
-          0% {
-            left: -100px;
-            top: 15%;
-            transform: translateY(0) rotateZ(0deg) scale(1);
-            opacity: 0;
-          }
-          5% {
-            opacity: 1;
-          }
-          50% {
-            transform: translateY(-60px) rotateZ(15deg) scale(1.1);
-          }
-          95% {
-            opacity: 1;
-          }
-          100% {
-            left: 110%;
-            top: 25%;
-            transform: translateY(0) rotateZ(0deg) scale(1);
-            opacity: 0;
-          }
-        }
-        
-        .plane-flight {
-          animation: flightPath ${duration}s ease-in-out infinite;
-          animation-delay: ${delay}s;
-        }
-      `}</style>
-      <div className="plane-flight absolute">
-        <Plane className="h-8 w-8 text-accent drop-shadow-lg" />
-      </div>
-    </div>
-  );
-}
 
 /* =========================================================
    CONSTANTS
@@ -83,31 +42,31 @@ const PARTNERS = ["AeroWays", "Skypass", "Voyagex", "Nomad Stay"];
 const FEATURES = [
   {
     icon: Compass,
-    title: "Handpicked stays",
-    description:
-      "Every hotel is carefully selected to make your trip feel special, comfortable, and memorable.",
+    title: "Discover",
+    description: "Explore curated destinations handpicked just for you.",
     color: "from-blue-400/20 to-cyan-400/20",
+    step: 1,
   },
   {
     icon: ShieldCheck,
-    title: "Best price guarantee",
-    description:
-      "Find it cheaper elsewhere within 24 hours and we will help make sure you get the best value.",
+    title: "Compare",
+    description: "Best price guarantee backed by our 24-hour promise.",
     color: "from-green-400/20 to-emerald-400/20",
+    step: 2,
   },
   {
     icon: MapPinned,
-    title: "Local expertise",
-    description:
-      "Discover recommendations from people who actually know the places you are travelling to.",
+    title: "Connect",
+    description: "Get local insights from experts who know these places.",
     color: "from-orange-400/20 to-amber-400/20",
+    step: 3,
   },
   {
     icon: Headphones,
-    title: "Support on the move",
-    description:
-      "A real person is here when you need help, whether you are planning or already travelling.",
+    title: "Support",
+    description: "24/7 support from real people, not bots.",
     color: "from-purple-400/20 to-pink-400/20",
+    step: 4,
   },
 ];
 
@@ -181,7 +140,7 @@ const STATS = [
 const TESTIMONIALS = [
   {
     quote:
-      "Booked a last-minute trip to Santorini and every detail Roam suggested — the hotel and ferry timing — actually held up.",
+      "Booked a last-minute trip to Santorini and every detail Travel Go suggested — the hotel and ferry timing — actually held up.",
     name: "Priya Nair",
     trip: "Santorini, Greece",
     initials: "PN",
@@ -206,10 +165,6 @@ const TESTIMONIALS = [
 ];
 
 /* =========================================================
-   DESTINATION CARD
-========================================================= */
-
-/* =========================================================
    HERO SECTION COMPONENT
 ========================================================= */
 
@@ -226,10 +181,9 @@ function HeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 px-6 pt-20 pb-32 lg:pt-32 lg:pb-48"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 px-6 pt-20 pb-32 lg:pt-32 lg:pb-48 min-h-screen flex items-center"
       onMouseMove={handleMouseMove}
     >
-      {/* Animated gradient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="absolute h-96 w-96 rounded-full bg-cyan-500/30 blur-3xl transition-transform duration-300"
@@ -242,30 +196,27 @@ function HeroSection() {
         <div className="absolute -right-40 top-20 h-80 w-80 rounded-full bg-purple-500/20 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl w-full">
         <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
-          {/* LEFT SIDE */}
           <div className="relative z-10">
-            {/* Eyebrow */}
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-white/10 px-4 py-2 backdrop-blur-md">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-500/40">
                 <Compass className="h-3.5 w-3.5 text-cyan-200" />
               </span>
               <span className="text-sm font-semibold text-cyan-100">
-                Adventures await you
+                Start your journey
               </span>
             </div>
 
-            {/* Main heading with dynamic gradient */}
             <h1 className="max-w-2xl text-5xl font-black leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
-              Go find your
+              Your next adventure
               <br />
               <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                next great
+                is waiting
               </span>
               <br />
               <span className="relative inline-block text-transparent bg-gradient-to-r from-orange-300 to-pink-300 bg-clip-text">
-                adventure.
+                to take off.
                 <svg
                   className="absolute -bottom-3 left-0 w-full"
                   viewBox="0 0 320 18"
@@ -288,15 +239,14 @@ function HeroSection() {
               </span>
             </h1>
 
-            {/* Description */}
             <p className="mt-8 max-w-lg text-base leading-7 text-blue-100/75 md:text-lg">
-              Mountains, coastlines, cities that never sit still — find the
-              stay, book the trip, and let the adventure write itself.
+              Scroll down to explore how Travel Go makes travel planning
+              effortless. Watch as we guide you through every step of your
+              journey.
             </p>
 
-            {/* Social */}
             <div className="mt-8 flex items-center gap-3">
-              <span className="text-sm text-white/40">Follow the journey</span>
+              <span className="text-sm text-white/40">Connect with us</span>
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.label}
@@ -308,7 +258,6 @@ function HeroSection() {
               ))}
             </div>
 
-            {/* Partners */}
             <div className="mt-12 border-t border-white/10 pt-7">
               <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
                 Trusted by leading travel brands
@@ -326,11 +275,9 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT SIDE - IMAGE COLLAGE */}
           <div className="relative mx-auto h-[560px] w-full max-w-[600px] md:h-[650px]">
             <div className="absolute right-0 top-10 h-[450px] w-[450px] rounded-full bg-gradient-to-b from-cyan-500/20 to-blue-500/10 blur-2xl" />
 
-            {/* Main image */}
             <div className="absolute right-0 top-0 h-[390px] w-[74%] overflow-hidden rounded-3xl shadow-2xl md:h-[455px] ring-1 ring-white/10">
               <img
                 src="https://picsum.photos/seed/roam-hero-1/1000/1200"
@@ -352,7 +299,6 @@ function HeroSection() {
               </div>
             </div>
 
-            {/* Secondary image */}
             <div className="absolute bottom-2 left-0 h-[300px] w-[57%] overflow-hidden rounded-3xl border-2 border-white/20 shadow-2xl md:h-[355px]">
               <img
                 src="https://picsum.photos/seed/roam-hero-2/700/900"
@@ -366,57 +312,99 @@ function HeroSection() {
                   </div>
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                      Next stop
+                      Ready to explore
                     </p>
                     <p className="text-sm font-bold text-slate-900">
-                      Positano, Italy
+                      Scroll to begin
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Floating trip card */}
-            <div className="absolute right-[-10px] top-[43%] w-56 rounded-2xl border border-white/30 bg-white/95 p-5 shadow-2xl backdrop-blur md:right-[-35px] hover:shadow-3xl hover:-translate-y-2 transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
-                  Your next escape
-                </span>
-                <button
-                  type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-pink-500 text-white transition hover:scale-125 hover:shadow-lg"
-                >
-                  <Heart className="h-4 w-4 fill-current" />
-                </button>
-              </div>
-              <div className="mt-5">
-                <p className="text-lg font-bold text-slate-900">Santorini</p>
-                <p className="mt-1 text-xs text-slate-500">5 days · 4 nights</p>
-              </div>
-              <div className="mt-5 flex items-center justify-between">
-                <span className="text-sm font-bold text-slate-900">
-                  From{" "}
-                  <span className="text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text">
-                    $990
-                  </span>
-                </span>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
-                  <ArrowUpRight className="h-4 w-4" />
-                </div>
-              </div>
-            </div>
-
-            {/* Play button */}
-            <button
-              type="button"
-              className="absolute bottom-14 right-12 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-pink-500 text-white shadow-2xl transition-all duration-300 hover:scale-125 hover:shadow-3xl"
-            >
-              <Play className="ml-1 h-6 w-6 fill-current" />
-            </button>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* =========================================================
+   JOURNEY STEP CARD
+========================================================= */
+
+function JourneyStep({
+  step,
+  icon: Icon,
+  title,
+  description,
+  details,
+  image,
+}: {
+  step: number;
+  icon: any;
+  title: string;
+  description: string;
+  details: string[];
+  image?: string;
+}) {
+  return (
+    <div className="group">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+        {step % 2 === 0 && image && (
+          <div className="order-2 lg:order-1">
+            <div className="rounded-3xl overflow-hidden shadow-2xl h-96">
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+
+        <div className={step % 2 === 0 ? "order-1 lg:order-2" : ""}>
+          <div className="inline-flex items-center justify-center mb-6">
+            <div className="absolute h-16 w-16 rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-600/30 blur-xl" />
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg">
+              <Icon className="h-8 w-8" />
+            </div>
+          </div>
+
+          <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/30">
+            <span className="text-sm font-bold text-cyan-600">Step {step}</span>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
+            {title}
+          </h2>
+
+          <p className="text-lg text-slate-600 mb-8">{description}</p>
+
+          <div className="space-y-3">
+            {details.map((detail, idx) => (
+              <div key={idx} className="flex items-center gap-3">
+                <div className="flex-shrink-0">
+                  <Check className="h-5 w-5 text-green-500" />
+                </div>
+                <p className="text-slate-700 font-medium">{detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {step % 2 === 1 && image && (
+          <div className="order-2">
+            <div className="rounded-3xl overflow-hidden shadow-2xl h-96">
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -427,10 +415,7 @@ function HeroSection() {
 export function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden bg-gradient-to-b from-slate-50 to-blue-50/50">
-      {/* Flying planes - multiple animated planes */}
-      <FloatingPlane delay={0} duration={25} />
-      <FloatingPlane delay={8} duration={28} />
-      <FloatingPlane delay={16} duration={30} />
+      {/* Scroll-based plane animation */}
 
       {/* Hero */}
       <HeroSection />
@@ -452,15 +437,85 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Journey Section - Explaining the app */}
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <div className="mb-20">
+          <p className="inline-flex items-center gap-2 text-sm font-bold text-cyan-600 mb-3">
+            <Plane className="h-4 w-4" />
+            HOW IT WORKS
+          </p>
+          <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6">
+            Your journey in four simple steps
+          </h2>
+          <p className="text-xl text-slate-600 max-w-2xl">
+            From inspiration to booking to arriving at your destination, we're
+            with you every step of the way.
+          </p>
+        </div>
+
+        <div className="space-y-8">
+          <JourneyStep
+            step={1}
+            icon={Compass}
+            title="Discover & Dream"
+            description="Explore destinations handpicked by travel experts who know them inside and out."
+            details={[
+              "Browse 1,200+ curated properties across 96 countries",
+              "Filter by experience type, budget, and travel dates",
+              "Read authentic reviews from real travelers",
+            ]}
+            image="https://picsum.photos/seed/roam-discover/800/600"
+          />
+
+          <JourneyStep
+            step={2}
+            icon={ShieldCheck}
+            title="Compare & Secure"
+            description="We guarantee you the best price, backed by our industry-leading price match."
+            details={[
+              "See all prices transparently with no hidden fees",
+              "24-hour price match guarantee on all bookings",
+              "Flexible cancellation up to 7 days before arrival",
+            ]}
+            image="https://picsum.photos/seed/roam-compare/800/600"
+          />
+
+          <JourneyStep
+            step={3}
+            icon={MapPinned}
+            title="Plan & Connect"
+            description="Get insider tips from local experts and plan your perfect itinerary."
+            details={[
+              "Access personalized local recommendations",
+              "Connect with travel guides in your destination",
+              "Get real-time updates and local event information",
+            ]}
+            image="https://picsum.photos/seed/roam-plan/800/600"
+          />
+
+          <JourneyStep
+            step={4}
+            icon={Headphones}
+            title="Travel & Support"
+            description="Enjoy your trip with 24/7 support from real people who care."
+            details={[
+              "Instant support via chat, phone, or email",
+              "Emergency assistance in 50+ languages",
+              "Real-time booking modifications and updates",
+            ]}
+            image="https://picsum.photos/seed/roam-travel/800/600"
+          />
+        </div>
+      </section>
+
+      {/* Features Grid */}
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4">
-            Why travelers choose Roam
+            Why travelers choose Travel Go
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl">
-            We're obsessed with making travel effortless, safe, and
-            unforgettable.
+            We've obsessed over every detail to make travel planning effortless.
           </p>
         </div>
 
@@ -497,10 +552,10 @@ export function HomePage() {
         <div className="mb-16">
           <p className="inline-flex items-center gap-2 text-sm font-bold text-cyan-600 mb-3">
             <span className="h-2 w-2 rounded-full bg-cyan-500" />
-            HOWEVER YOU LIKE TO MOVE
+            EXPERIENCES
           </p>
           <h2 className="text-4xl md:text-5xl font-black text-slate-900">
-            Browse by experience
+            Browse by your travel style
           </h2>
         </div>
 
@@ -539,7 +594,7 @@ export function HomePage() {
           <div>
             <p className="inline-flex items-center gap-2 text-sm font-bold text-orange-500 mb-3">
               <span className="h-2 w-2 rounded-full bg-orange-500" />
-              PLACES WORTH THE DETOUR
+              DESTINATIONS
             </p>
             <h2 className="text-4xl md:text-5xl font-black text-slate-900">
               Popular destinations
@@ -590,10 +645,10 @@ export function HomePage() {
         <div className="mb-16">
           <p className="inline-flex items-center gap-2 text-sm font-bold text-purple-600 mb-3">
             <span className="h-2 w-2 rounded-full bg-purple-500" />
-            FROM PEOPLE WHO ACTUALLY WENT
+            REAL STORIES
           </p>
           <h2 className="text-4xl md:text-5xl font-black text-slate-900">
-            Traveler stories
+            Travelers' experiences
           </h2>
         </div>
 
@@ -637,20 +692,19 @@ export function HomePage() {
             <div className="flex-1">
               <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-300 mb-4 bg-white/10 rounded-full px-3 py-1.5 backdrop-blur w-fit">
                 <span className="h-2 w-2 rounded-full bg-cyan-400" />
-                Your next chapter starts here
+                Ready for takeoff?
               </p>
 
               <h3 className="text-4xl md:text-5xl font-black leading-tight mb-4">
-                Don't just dream about the trip.
+                Your adventure
                 <br />
                 <span className="bg-gradient-to-r from-orange-300 to-pink-300 bg-clip-text text-transparent">
-                  Go live it.
+                  starts now.
                 </span>
               </h3>
 
               <p className="text-base text-white/70">
-                Find a place that makes you want to pack your bags right now.
-                Your adventure is waiting.
+                Book your next trip and experience travel like never before.
               </p>
             </div>
 
@@ -671,7 +725,7 @@ export function HomePage() {
       <footer className="mx-auto max-w-7xl px-6 pb-8 border-t border-slate-200">
         <div className="flex flex-col gap-4 pt-8 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-semibold">
-            © {new Date().getFullYear()} Roam. Travel beautifully.
+            © {new Date().getFullYear()} Travel Go, travel beautifully.
           </p>
           <div className="flex gap-6">
             <a
