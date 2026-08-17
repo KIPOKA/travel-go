@@ -22,7 +22,6 @@ import {
 import { HeroSearchBar } from "@/features/search/components/HeroSearchBar";
 import { RotatingBadge } from "@/components/ui/RotatingBadge";
 import { DestinationCard } from "@/features/hotels/components/DestinationCard";
-import travelBackground from "../assets/camp.png";
 /* =========================================================
    SOCIAL LINKS
 ========================================================= */
